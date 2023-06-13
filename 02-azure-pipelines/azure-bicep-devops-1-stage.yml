@@ -52,7 +52,7 @@ steps:
     azureResourceManagerConnection: 'Azure subscription 1 (38f51217-7342-4f22-b591-b19d85f1504d)'
     subscriptionId: '38f51217-7342-4f22-b591-b19d85f1504d'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'rg-bicep-demo-00177'
+    resourceGroupName: 'rg-bicep-demo-0017'
     location: 'westeurope'
     templateLocation: 'Linked artifact'
     csmFile: '01-bicep-webapp/webapp-linux.bicep'
