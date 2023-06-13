@@ -9,6 +9,7 @@ variables:
   webAppName: 'bicep00105'
   templateFile: '01-bicep-webapp/webapp-linux.bicep'
   Subscription: 'Azure subscription 1 (38f51217-7342-4f22-b591-b19d85f1504d)'
+  npm_config_cache: '$(Build.SourcesDirectory)/cache.json'
 
 pool:
   vmImage: 'ubuntu-latest'
