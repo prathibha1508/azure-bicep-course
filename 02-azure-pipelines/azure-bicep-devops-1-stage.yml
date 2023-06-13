@@ -59,7 +59,7 @@ steps:
     csmParametersFile: '01-bicep-webapp/azuredeploy.parameters.json'
     #overrideParameters: '--parameters webAppName=$(webAppName)'
     deploymentMode: 'Incremental'
-    workingDir: '$(Build.SourcesDirectory)/cache.json'  
+    workingDir: '$(Build.SourcesDirectory)/cache'  
 
 # - task: AzureCLI@2
 #   displayName: Deploy Bicep To Azure
