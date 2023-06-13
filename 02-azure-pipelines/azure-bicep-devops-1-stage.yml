@@ -54,9 +54,9 @@ steps:
     resourceGroupName: 'rg-bicep-demo-0017'
     location: 'Central US'
     templateLocation: 'Linked artifact'
-    csmFile: '$(templateFile)'
+    csmFile: '$(templateFile) --parameters webAppName=$(webAppName)'
     #csmParametersFile: '--parameters webAppName=$(webAppName)'
-    overrideParameters: '--parameters webAppName=$(webAppName)'
+    #overrideParameters: '--parameters webAppName=$(webAppName)'
     deploymentMode: 'Incremental'
     workingDir: '$(Build.SourcesDirectory)/cache.json'  
 
