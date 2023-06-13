@@ -46,7 +46,7 @@ steps:
 #          --template-file $(templateFile) \
 #          --parameters webAppName=$(webAppName)
 - task: AzureResourceManagerTemplateDeployment@3
-  condition: ne(variables.CACHE_RESTORED, 'true')
+  condition: eq(variables.CACHE_RESTORED, 'true')
   inputs:
     deploymentScope: 'Resource Group'
     azureResourceManagerConnection: 'Azure subscription 1 (38f51217-7342-4f22-b591-b19d85f1504d)'
