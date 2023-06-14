@@ -34,14 +34,14 @@ steps:
     enabled: true
     inputs:
       versionSpec: '8.9.1'
-      #workingDir: $(npm_config_cache)
+      workingDir: $(npm_config_cache)
   - task: NodeTool@0
     displayName: 'not exist Install Node 8.8.1' #building
     #condition: ne(variables.CACHE_RESTORED, 'true')
     enabled: true
     inputs:
       versionSpec: '8.9.1'
-      #workingDir: $(npm_config_cache)
+      workingDir: $(npm_config_cache)
 
   # - task: Npm@1
   #   displayName: 'Global - Tools - Install npm 6.4.1' # bulding
