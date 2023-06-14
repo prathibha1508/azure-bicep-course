@@ -57,7 +57,7 @@ steps:
     displayName: 'Cache'
     inputs:
       key: $(Build.SourcesDirectory)/cache
-      path: '$(Build.SourcesDirectory)/cache'
+      path: '$(arm_config_cache)'
       cacheHitVar: 'CACHE_RESTORED'
   - task: AzureCLI@2
     displayName: Preview Bicep Changes
@@ -85,4 +85,4 @@ steps:
       csmParametersFile: '01-bicep-webapp/azuredeploy.parameters.json'
       #overrideParameters: '--parameters webAppName=$(webAppName)'
       deploymentMode: 'Incremental'
-      workingDir: '$(Build.SourcesDirectory)/cache'
+      workingDir: '$(arm_config_cache)'
