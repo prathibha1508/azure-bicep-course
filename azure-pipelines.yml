@@ -19,23 +19,23 @@ variables:
   arm_config_cache: '$(Build.SourcesDirectory)/01-bicep-webapp'
 
 steps:
-  - task: Cache@2
-    displayName: 'Cache'
-    inputs:
-      key: $(Build.SourcesDirectory)/package.json    #'npm | "$(Agent.OS)" | $(Build.SourcesDirectory)/package.json'
-      # restoreKeys: |
-      #   npm | "$(Agent.OS)"
-      #   npm
-      path: '$(npm_config_cache)'
-      cacheHitVar: 'CACHE_RESTORED'
+  # - task: Cache@2
+  #   displayName: 'Cache'
+  #   inputs:
+  #     key: $(Build.SourcesDirectory)/package.json    #'npm | "$(Agent.OS)" | $(Build.SourcesDirectory)/package.json'
+  #     # restoreKeys: |
+  #     #   npm | "$(Agent.OS)"
+  #     #   npm
+  #     path: '$(npm_config_cache)'
+  #     cacheHitVar: 'CACHE_RESTORED'
 
-  - task: NodeTool@0
-    displayName: 'exists Install Node 8.8.1' #building
-    #condition: eq(variables.CACHE_RESTORED, 'true')
-    enabled: true
-    inputs:
-      versionSpec: '8.9.1'
-      workingDir: $(npm_config_cache)
+  # - task: NodeTool@0
+  #   displayName: 'exists Install Node 8.8.1' #building
+  #   #condition: eq(variables.CACHE_RESTORED, 'true')
+  #   enabled: true
+  #   inputs:
+  #     versionSpec: '8.9.1'
+  #     workingDir: $(npm_config_cache)
 
   # - task: NodeTool@0
   #   displayName: 'not exist Install Node 8.8.1' #building
@@ -57,7 +57,7 @@ steps:
     displayName: 'Cache'
     inputs:
       key: $(Build.SourcesDirectory)/cache
-      path: '$(arm_config_cache)'
+      path: '$(Build.SourcesDirectory)/cache'
       cacheHitVar: 'CACHE_RESTORED'
   - task: AzureCLI@2
     displayName: Preview Bicep Changes
