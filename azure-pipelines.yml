@@ -1,88 +1,148 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger: none
 
-pool:
-  vmImage: windows-latest
+pool: self-hosted-agent-win
+  #vmImage: windows-latest
 
 variables:
-  npm_config_cache: 'C:/hostedtoolcache/windows/.npm' 
-  dotnet_config_cache: 'C:/hostedtoolcache/windows/.dotnet'
-  resourceGroupName: 'rg-bicep-demo-0017'
-  location: 'westeurope'
-  webAppName: 'bicep00105'
-  templateFile: '01-bicep-webapp/webapp-linux.bicep'
-  Subscription: 'Azure subscription 1 (38f51217-7342-4f22-b591-b19d85f1504d)'
-  arm_config_cache: '$(Build.SourcesDirectory)/01-bicep-webapp'
+  npm_config_cache: '$(Agent.ToolsDirectory)' #'C:/hostedtoolcache/windows' #/.npm' #'$(Agent.ToolsDirectory)\.npm' #$(Agent.HomeDirectory)/.npm node
+  dotnet_config_cache: 'C:/hostedtoolcache/windows/dotnet'
+  node_config_cache: 'C:/hostedtoolcache/windows'
 
 steps:
-  # - task: Cache@2
-  #   displayName: 'Cache'
-  #   inputs:
-  #     key: $(Build.SourcesDirectory)/package.json    #'npm | "$(Agent.OS)" | $(Build.SourcesDirectory)/package.json'
-  #     # restoreKeys: |
-  #     #   npm | "$(Agent.OS)"
-  #     #   npm
-  #     path: '$(npm_config_cache)'
-  #     cacheHitVar: 'CACHE_RESTORED'
+# - task: Cache@2
+#   displayName: 'Cache'
+#   inputs:
+#     key: $(Build.SourcesDirectory)/package.json    #'npm | "$(Agent.OS)" | $(Build.SourcesDirectory)/package.json' | $(Build.SourcesDirectory)/package-lock.json | 
+#     # restoreKeys: |
+#     #   npm | "$(Agent.OS)"
+#     #   npm
+#     path: '$(npm_config_cache)'
+#     cacheHitVar: 'CACHE_RESTORED'   
+- task: NodeTool@0
+  displayName: 'Install Node 8.9.1' 
+  #condition: eq(variables.CACHE_RESTORED, 'true')
+  enabled: true
+  inputs:
+    versionSpec: '8.9.1'
+    workingDir: '$(npm_config_cache)'  
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo "node --version"
+      node -v
+        #npm install npm@6.9.0 -g
+      echo "npm version"
+      npm -v
+- task: Npm@1
+  displayName: 'Global - Tools - Install npm 6.4.1' # bulding
+  #condition: eq(variables.CACHE_RESTORED, 'true')
+  enabled: true
+  inputs:
+    command: 'custom'
+    workingDir: '$(npm_config_cache)'
+    customCommand: 'i -g npm@6.4.1'
+  continueOnError: true         
+- task: Npm@1
+  displayName: 'Global - Tools - Install npm 6.4.1' # bulding
+  #condition: eq(variables.CACHE_RESTORED, 'true')
+  enabled: true
+  inputs:
+    command: 'install'
+    workingDir: '$(npm_config_cache)'
+    customCommand: 'i npm@6.4.1' 
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo "npm"
+      npm -v    
+      
+# # Starter pipeline
+# # Start with a minimal pipeline that you can customize to build and deploy your code.
+# # Add steps that build, run tests, deploy, and more:
+# # https://aka.ms/yaml
 
-  # - task: NodeTool@0
-  #   displayName: 'exists Install Node 8.8.1' #building
-  #   #condition: eq(variables.CACHE_RESTORED, 'true')
-  #   enabled: true
-  #   inputs:
-  #     versionSpec: '8.9.1'
-  #     workingDir: $(npm_config_cache)
+# trigger: none
 
-  # - task: NodeTool@0
-  #   displayName: 'not exist Install Node 8.8.1' #building
-  #   #condition: ne(variables.CACHE_RESTORED, 'true')
-  #   enabled: true
-  #   inputs:
-  #     versionSpec: '8.9.1'
-  #     workingDir: $(npm_config_cache)
+# pool:
+#   vmImage: windows-latest
 
-  # - task: Npm@1
-  #   displayName: 'Global - Tools - Install npm 6.4.1' # bulding
-  #   #condition: ne(variables.CACHE_RESTORED, 'true')
-  #   enabled: true
-  #   inputs:
-  #     command: 'custom'
-  #     #workingDir: '$(Build.SourcesDirectory)'
-  #     customCommand: 'i -g npm@6.4.1 --cache $(npm_config_cache)'
-  - task: Cache@2
-    displayName: 'Cache'
-    inputs:
-      key: $(Build.SourcesDirectory)/cache
-      path: '$(arm_config_cache)'
-      cacheHitVar: 'CACHE_RESTORED'
-  - task: AzureCLI@2
-    displayName: Preview Bicep Changes
-    inputs:
-      azureSubscription: $(Subscription)
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az --version
-              az group create --name $(resourceGroupName) --location $(location)
-              az deployment group what-if --resource-group $(resourceGroupName) \
-                --template-file $(templateFile) \
-                --parameters webAppName=$(webAppName)
-  - task: AzureResourceManagerTemplateDeployment@3
-    #condition: eq(variables.CACHE_RESTORED, 'true')
-    inputs:
-      deploymentScope: 'Resource Group'
-      azureResourceManagerConnection: 'Azure subscription 1 (38f51217-7342-4f22-b591-b19d85f1504d)'
-      subscriptionId: '38f51217-7342-4f22-b591-b19d85f1504d'
-      action: 'Create Or Update Resource Group'
-      resourceGroupName: 'rg-bicep-demo-0017'
-      location: 'westeurope'
-      templateLocation: 'Linked artifact'
-      csmFile: '01-bicep-webapp/webapp-linux.bicep'
-      csmParametersFile: '01-bicep-webapp/azuredeploy.parameters.json'
-      #overrideParameters: '--parameters webAppName=$(webAppName)'
-      deploymentMode: 'Incremental'
-      workingDir: '$(arm_config_cache)'
+# variables:
+#   npm_config_cache: 'C:/hostedtoolcache/windows/.npm' 
+#   dotnet_config_cache: 'C:/hostedtoolcache/windows/.dotnet'
+#   resourceGroupName: 'rg-bicep-demo-0017'
+#   location: 'westeurope'
+#   webAppName: 'bicep00105'
+#   templateFile: '01-bicep-webapp/webapp-linux.bicep'
+#   Subscription: 'Azure subscription 1 (38f51217-7342-4f22-b591-b19d85f1504d)'
+#   arm_config_cache: '$(Build.SourcesDirectory)/01-bicep-webapp'
+
+# steps:
+#   # - task: Cache@2
+#   #   displayName: 'Cache'
+#   #   inputs:
+#   #     key: $(Build.SourcesDirectory)/package.json    #'npm | "$(Agent.OS)" | $(Build.SourcesDirectory)/package.json'
+#   #     # restoreKeys: |
+#   #     #   npm | "$(Agent.OS)"
+#   #     #   npm
+#   #     path: '$(npm_config_cache)'
+#   #     cacheHitVar: 'CACHE_RESTORED'
+
+#   # - task: NodeTool@0
+#   #   displayName: 'exists Install Node 8.8.1' #building
+#   #   #condition: eq(variables.CACHE_RESTORED, 'true')
+#   #   enabled: true
+#   #   inputs:
+#   #     versionSpec: '8.9.1'
+#   #     workingDir: $(npm_config_cache)
+
+#   # - task: NodeTool@0
+#   #   displayName: 'not exist Install Node 8.8.1' #building
+#   #   #condition: ne(variables.CACHE_RESTORED, 'true')
+#   #   enabled: true
+#   #   inputs:
+#   #     versionSpec: '8.9.1'
+#   #     workingDir: $(npm_config_cache)
+
+#   # - task: Npm@1
+#   #   displayName: 'Global - Tools - Install npm 6.4.1' # bulding
+#   #   #condition: ne(variables.CACHE_RESTORED, 'true')
+#   #   enabled: true
+#   #   inputs:
+#   #     command: 'custom'
+#   #     #workingDir: '$(Build.SourcesDirectory)'
+#   #     customCommand: 'i -g npm@6.4.1 --cache $(npm_config_cache)'
+#   - task: Cache@2
+#     displayName: 'Cache'
+#     inputs:
+#       key: $(Build.SourcesDirectory)/cache
+#       path: '$(arm_config_cache)'
+#       cacheHitVar: 'CACHE_RESTORED'
+#   - task: AzureCLI@2
+#     displayName: Preview Bicep Changes
+#     inputs:
+#       azureSubscription: $(Subscription)
+#       scriptType: 'bash'
+#       scriptLocation: 'inlineScript'
+#       inlineScript: |
+#         az --version
+#               az group create --name $(resourceGroupName) --location $(location)
+#               az deployment group what-if --resource-group $(resourceGroupName) \
+#                 --template-file $(templateFile) \
+#                 --parameters webAppName=$(webAppName)
+#   - task: AzureResourceManagerTemplateDeployment@3
+#     #condition: eq(variables.CACHE_RESTORED, 'true')
+#     inputs:
+#       deploymentScope: 'Resource Group'
+#       azureResourceManagerConnection: 'Azure subscription 1 (38f51217-7342-4f22-b591-b19d85f1504d)'
+#       subscriptionId: '38f51217-7342-4f22-b591-b19d85f1504d'
+#       action: 'Create Or Update Resource Group'
+#       resourceGroupName: 'rg-bicep-demo-0017'
+#       location: 'westeurope'
+#       templateLocation: 'Linked artifact'
+#       csmFile: '01-bicep-webapp/webapp-linux.bicep'
+#       csmParametersFile: '01-bicep-webapp/azuredeploy.parameters.json'
+#       #overrideParameters: '--parameters webAppName=$(webAppName)'
+#       deploymentMode: 'Incremental'
+#       workingDir: '$(arm_config_cache)'
