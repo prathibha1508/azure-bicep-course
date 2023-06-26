@@ -1,6 +1,6 @@
 trigger: none
 
-pool: self-hosted-agent-win
+pool: self-hosted-machine
   #vmImage: windows-latest
 
 variables:
@@ -57,7 +57,7 @@ steps:
     script: |
       echo "npm"
       npm -v    
-      
+
 # # Starter pipeline
 # # Start with a minimal pipeline that you can customize to build and deploy your code.
 # # Add steps that build, run tests, deploy, and more:
