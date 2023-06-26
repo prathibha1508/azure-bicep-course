@@ -35,6 +35,7 @@ steps:
       echo "npm version"
       npm -v
       npm cache clean or npm cache clean --force
+      rm -rf node_modules package-lock.json
 - task: Npm@1
   displayName: 'Global - Tools - Install npm 6.4.1' # bulding
   #condition: eq(variables.CACHE_RESTORED, 'true')
