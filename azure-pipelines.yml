@@ -34,6 +34,7 @@ steps:
         #npm install npm@6.9.0 -g
       echo "npm version"
       npm -v
+      npm cache clean
 - task: Npm@1
   displayName: 'Global - Tools - Install npm 6.4.1' # bulding
   #condition: eq(variables.CACHE_RESTORED, 'true')
