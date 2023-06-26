@@ -6,7 +6,7 @@ pool: self-hosted-machine
 variables:
   npm_config_cache: '$(Agent.ToolsDirectory)' #'C:/hostedtoolcache/windows' #/.npm' #'$(Agent.ToolsDirectory)\.npm' #$(Agent.HomeDirectory)/.npm node
   dotnet_config_cache: 'C:/hostedtoolcache/windows/dotnet'
-  node_config_cache: 'C:/hostedtoolcache/windows'
+  config_cache: 'C:\Users\devops\agent\_work\_tool\node\8.9.1\x64\node_modules\npm'
 
 steps:
 # - task: Cache@2
