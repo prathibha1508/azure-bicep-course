@@ -34,9 +34,9 @@ steps:
         #npm install npm@6.9.0 -g
       echo "npm version"
       npm -v
+      Remove-Item node_modules package-lock.json
       npm cache clean
       npm cache clean --force
-      Remove-Item node_modules package-lock.json
 - task: Npm@1
   displayName: 'Global - Tools - Install npm 6.4.1' # bulding
   #condition: eq(variables.CACHE_RESTORED, 'true')
