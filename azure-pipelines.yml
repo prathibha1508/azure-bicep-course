@@ -49,8 +49,7 @@ steps:
     command: 'install'
     workingDir: '$(Build.SourcesDirectory)'
     customCommand: 'i -g npm@6.4.1'
-
-#   continueOnError: true         
+  continueOnError: true         
 # - task: Npm@1
 #   displayName: 'Global - Tools - Install npm 6.4.1' # bulding
 #   #condition: eq(variables.CACHE_RESTORED, 'true')
