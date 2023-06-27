@@ -24,6 +24,8 @@ steps:
       node -v
       echo "npm version"
       npm -v
+      npm -h
+      npm init -y
       npm audit
         ##npm i npm@6.4.1 -g
     workingDirectory: '$(Agent.ToolsDirectory)'
