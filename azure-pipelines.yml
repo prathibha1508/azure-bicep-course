@@ -25,7 +25,7 @@ steps:
       echo "npm version"
       npm -v
       npm audit
-      npm i npm@6.4.1 -g
+        ##npm i npm@6.4.1 -g
     workingDirectory: '$(Agent.ToolsDirectory)'
 - task: Npm@1
   displayName: 'Install npm 6.4.1' 
