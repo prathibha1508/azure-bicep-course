@@ -27,7 +27,7 @@ steps:
        npm i npm@6.4.1 -g
     workingDirectory: '$(Agent.ToolsDirectory)'
 - task: Npm@1
-  displayName: 'Global - Tools - Install npm 6.4.1' 
+  displayName: 'Install npm 6.4.1' 
   enabled: true
   inputs:
     command: 'install'
