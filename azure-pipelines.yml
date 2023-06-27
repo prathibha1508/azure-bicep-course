@@ -23,8 +23,9 @@ steps:
       echo "node --version"
       node -v
       echo "npm version"
-       npm -v
-       npm i npm@6.4.1 -g
+      npm -v
+      npm audit
+      npm i npm@6.4.1 -g
     workingDirectory: '$(Agent.ToolsDirectory)'
 - task: Npm@1
   displayName: 'Install npm 6.4.1' 
