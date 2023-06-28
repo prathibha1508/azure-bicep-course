@@ -8,38 +8,63 @@ variables:
   dotnet_config_cache: 'C:/hostedtoolcache/windows/dotnet'
   config_cache: $(Build.SourcesDirectory) #'C:\Users\devops\agent\_work\_tool\node\8.9.1\x64\node_modules\npm'
 
-steps:
-- task: NodeTool@0
-  displayName: 'Install Node 8.9.1' 
-  enabled: true
-  inputs:
-    versionSpec: '8.9.1'
-    # workingDir: '$(Agent.ToolsDirectory)' #'$(Build.SourcesDirectory)'  
-  retryCountOnTaskFailure: 5     
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      echo "node --version"
-      node -v
-      echo "npm version"
-      npm -v
-    workingDirectory: '$(Agent.ToolsDirectory)'
-- task: Npm@1
-  displayName: 'Install npm 6.4.1' 
-  enabled: true
-  inputs:
-    command: 'install'
-    workingDir: '$(Agent.ToolsDirectory)' #'$(Build.SourcesDirectory)'
-    customCommand: 'i -g npm@6.4.1'
-  continueOnError: true
-  retryCountOnTaskFailure: 5      
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      echo "npm"
-      npm -v       
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        displayName: "Angular App Build"
+        # workspace:
+        #   clean: all
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "8.9.x"
+            displayName: "Install Node.js"
+          - task: Npm@1
+            inputs:
+              command: "install"
+              displayName: "Npm Install"
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo "node --version"
+                node -v
+                  #npm install npm@6.9.0 -g
+                echo "npm version"
+                npm -v
+# steps:
+# - task: NodeTool@0
+#   displayName: 'Install Node 8.9.1' 
+#   enabled: true
+#   inputs:
+#     versionSpec: '8.9.1'
+#     # workingDir: '$(Agent.ToolsDirectory)' #'$(Build.SourcesDirectory)'  
+#   retryCountOnTaskFailure: 5     
+# - task: PowerShell@2
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       echo "node --version"
+#       node -v
+#       echo "npm version"
+#       npm -v
+#     workingDirectory: '$(Agent.ToolsDirectory)'
+# - task: Npm@1
+#   displayName: 'Install npm 6.4.1' 
+#   enabled: true
+#   inputs:
+#     command: 'install'
+#     workingDir: '$(Agent.ToolsDirectory)' #'$(Build.SourcesDirectory)'
+#     customCommand: 'i -g npm@6.4.1'
+#   continueOnError: true
+#   retryCountOnTaskFailure: 5      
+# - task: PowerShell@2
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       echo "npm"
+#       npm -v       
 
 # - task: PowerShell@2
 #   inputs:
